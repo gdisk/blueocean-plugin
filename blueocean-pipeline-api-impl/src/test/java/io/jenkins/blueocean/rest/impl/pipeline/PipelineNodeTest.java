@@ -11,7 +11,6 @@ import hudson.model.Slave;
 import hudson.model.queue.QueueTaskFuture;
 import hudson.util.RunList;
 import io.jenkins.blueocean.commons.MapsHelper;
-import io.jenkins.blueocean.commons.ResourcesUtils;
 import io.jenkins.blueocean.listeners.NodeDownstreamBuildAction;
 import io.jenkins.blueocean.rest.hal.Link;
 import io.jenkins.blueocean.rest.model.BluePipelineNode;
@@ -23,6 +22,7 @@ import jenkins.plugins.git.GitSCMSource;
 import jenkins.plugins.git.GitSampleRepoRule;
 import jenkins.scm.api.SCMSource;
 import net.sf.json.JSONObject;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -48,6 +48,7 @@ import org.jvnet.hudson.test.Issue;
 
 import java.io.File;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -80,7 +81,7 @@ public class PipelineNodeTest extends PipelineBaseTest {
         WorkflowJob p = j.createProject(WorkflowJob.class, "project");
 
         URL resource = getClass().getResource("successfulStepWithBlockFailureAfterward.jenkinsfile");
-        String jenkinsFile = ResourcesUtils.toString(resource);
+        String jenkinsFile = IOUtils.toString(resource, StandardCharsets.UTF_8);
         p.setDefinition(new CpsFlowDefinition(jenkinsFile, true));
         p.save();
 
@@ -2311,7 +2312,7 @@ public class PipelineNodeTest extends PipelineBaseTest {
     public void submitInputPostBlock() throws Exception {
         WorkflowJob job = j.jenkins.createProject(WorkflowJob.class, "pipeline1");
         URL resource = getClass().getResource("stepsFromPost.jenkinsfile");
-        String jenkinsFile = ResourcesUtils.toString(resource);
+        String jenkinsFile = IOUtils.toString(resource, StandardCharsets.UTF_8);
         job.setDefinition(new CpsFlowDefinition(jenkinsFile, true));
         QueueTaskFuture<WorkflowRun> buildTask = job.scheduleBuild2(0);
         WorkflowRun run = buildTask.getStartCondition().get();
@@ -2342,7 +2343,7 @@ public class PipelineNodeTest extends PipelineBaseTest {
     public void submitInputPostBlockWithParallelStages() throws Exception {
         WorkflowJob job = j.jenkins.createProject(WorkflowJob.class, "pipeline1");
         URL resource = getClass().getResource("parallelStepsFromPost.jenkinsfile");
-        String jenkinsFile = ResourcesUtils.toString(resource);
+        String jenkinsFile = IOUtils.toString(resource, StandardCharsets.UTF_8);
         job.setDefinition(new CpsFlowDefinition(jenkinsFile, true));
         QueueTaskFuture<WorkflowRun> buildTask = job.scheduleBuild2(0);
         WorkflowRun run = buildTask.getStartCondition().get();
@@ -3181,7 +3182,7 @@ public class PipelineNodeTest extends PipelineBaseTest {
     public void testDynamicInnerStage() throws Exception {
         WorkflowJob job = j.jenkins.createProject(WorkflowJob.class, "p");
         URL resource = getClass().getResource("testDynamicInnerStage.jenkinsfile");
-        String jenkinsFile = ResourcesUtils.toString(resource);
+        String jenkinsFile = IOUtils.toString(resource, StandardCharsets.UTF_8);
         job.setDefinition(new CpsFlowDefinition(jenkinsFile, true));
 
         WorkflowRun build = job.scheduleBuild2(0).get();
@@ -3200,7 +3201,7 @@ public class PipelineNodeTest extends PipelineBaseTest {
     public void nodeWrongFinishedStatus() throws Exception {
         WorkflowJob job = j.jenkins.createProject(WorkflowJob.class, "p");
         URL resource = getClass().getResource("JENKINS-53311.jenkinsfile");
-        String jenkinsFile = ResourcesUtils.toString(resource);
+        String jenkinsFile = IOUtils.toString(resource, StandardCharsets.UTF_8);
         job.setDefinition(new CpsFlowDefinition(jenkinsFile, true));
 
         WorkflowRun build = job.scheduleBuild2(0).waitForStart();
@@ -3309,7 +3310,7 @@ public class PipelineNodeTest extends PipelineBaseTest {
         WorkflowJob upstream = j.createProject(WorkflowJob.class, "upstream");
 
         URL resource = getClass().getResource("downstreamBuildLinks.jenkinsfile");
-        String jenkinsFile = ResourcesUtils.toString(resource);
+        String jenkinsFile = IOUtils.toString(resource, StandardCharsets.UTF_8);
         upstream.setDefinition(new CpsFlowDefinition(jenkinsFile, true));
 
         j.assertBuildStatus(Result.SUCCESS, upstream.scheduleBuild2(0));
@@ -3343,7 +3344,7 @@ public class PipelineNodeTest extends PipelineBaseTest {
         WorkflowJob upstream = j.createProject(WorkflowJob.class, "upstream");
 
         URL resource = getClass().getResource("downstreamBuildLinksDecl.jenkinsfile");
-        String jenkinsFile = ResourcesUtils.toString(resource);
+        String jenkinsFile = IOUtils.toString(resource, StandardCharsets.UTF_8);
         upstream.setDefinition(new CpsFlowDefinition(jenkinsFile, true));
 
         j.assertBuildStatus(Result.SUCCESS, upstream.scheduleBuild2(0));
@@ -3379,7 +3380,7 @@ public class PipelineNodeTest extends PipelineBaseTest {
         WorkflowJob upstream = j.createProject(WorkflowJob.class, "upstream");
 
         URL resource = getClass().getResource("downstreamBuildLinksSeq.jenkinsfile");
-        String jenkinsFile = ResourcesUtils.toString(resource);
+        String jenkinsFile = IOUtils.toString(resource, StandardCharsets.UTF_8);
         upstream.setDefinition(new CpsFlowDefinition(jenkinsFile, true));
 
         j.assertBuildStatus(Result.SUCCESS, upstream.scheduleBuild2(0));
