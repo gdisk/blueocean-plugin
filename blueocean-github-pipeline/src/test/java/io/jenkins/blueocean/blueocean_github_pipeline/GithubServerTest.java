@@ -283,7 +283,7 @@ public class GithubServerTest extends PipelineBaseTest {
         server = request()
             .status(200)
             .get( "/organizations/jenkins/scm/github-enterprise/servers/" +
-                      DigestUtils.sha256Hex(getDefaultApiUrl()) + "/")
+                      DigestUtils.sha256(getDefaultApiUrl()) + "/")
             .build(Map.class);
         Assert.assertEquals("My Server", server.get("name"));
         Assert.assertEquals(getDefaultApiUrl(), server.get("apiUrl"));
