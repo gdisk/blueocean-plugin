@@ -43,6 +43,7 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -243,7 +244,7 @@ public abstract class AbstractMultiBranchCreateRequest extends AbstractPipelineC
             throw fail(new Error(ERROR_FIELD_SCM_CONFIG_NAME, ErrorCodes.MISSING.toString(), ERROR_FIELD_SCM_CONFIG_NAME + " is required"));
         }
 
-        List<Error> errors = Collections.unmodifiableList(new LinkedList(validate(name, scmConfig)));
+        List<Error> errors = new ArrayList<>(new LinkedList( validate( name, scmConfig)));
 
         // Validate that name matches rules
         try {
