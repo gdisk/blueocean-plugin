@@ -113,7 +113,7 @@ public class GithubRepositories extends ScmRepositories {
     public Iterable<ScmRepository> getItems() {
         return repositories.stream()
             .map(ghRepository -> new GithubRepository(ghRepository, credential, GithubRepositories.this))
-            .collect( Collectors.toList());
+            .collect(Collectors.toList());
     }
 
     @Exported

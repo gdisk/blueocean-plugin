@@ -100,6 +100,7 @@ public abstract class GithubMockBase extends PipelineBaseTest {
         //setup github api mock with WireMock
         new File("src/test/resources/api/mappings").mkdirs();
         new File("src/test/resources/api/__files").mkdirs();
+
         githubApi.enableRecordMappings(new SingleRootFileSource("src/test/resources/api/mappings"),
                 new SingleRootFileSource("src/test/resources/api/__files"));
 
@@ -125,6 +126,7 @@ public abstract class GithubMockBase extends PipelineBaseTest {
 
             perTestStubMappings.clear();
         }
+        githubApi.resetAll();
     }
 
     static String getOrgName() {
@@ -137,10 +139,10 @@ public abstract class GithubMockBase extends PipelineBaseTest {
 
     protected String createGithubCredential(User user) throws UnirestException {
         Map r = new RequestBuilder(baseUrl)
-                .data(MapsHelper.of( "accessToken", accessToken))
+                .data(MapsHelper.of("accessToken", accessToken))
                 .status(200)
                 .jwtToken(getJwtToken(j.jenkins, user.getId(), user.getId()))
-                .crumb( this.crumb )
+                .crumb(this.crumb)
                 .put("/organizations/" + getOrgName() + "/scm/github/validate/?apiUrl="+githubApiUrl)
                 .build(Map.class);
         String credentialId = (String) r.get("credentialId");
@@ -183,7 +185,7 @@ public abstract class GithubMockBase extends PipelineBaseTest {
         when(scmSource.getCredentialsId()).thenReturn(credentialId);
         when(scmSource.getRepoOwner()).thenReturn("cloudbeers");
         when(scmSource.getRepository()).thenReturn("PR-demo");
-        when(mbp.getSCMSources()).thenReturn( Collections.singletonList(scmSource));
+        when(mbp.getSCMSources()).thenReturn(Collections.singletonList(scmSource));
         BlueOceanCredentialsProvider.FolderPropertyImpl folderProperty = mock(BlueOceanCredentialsProvider.FolderPropertyImpl.class);
         DescribableList<AbstractFolderProperty<?>,AbstractFolderPropertyDescriptor> mbpProperties = new DescribableList<>(mbp);
         mbpProperties.add(new BlueOceanCredentialsProvider.FolderPropertyImpl(
