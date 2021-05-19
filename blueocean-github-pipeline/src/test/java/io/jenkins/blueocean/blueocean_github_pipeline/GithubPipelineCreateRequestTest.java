@@ -43,6 +43,7 @@ import org.jenkinsci.plugins.github_branch_source.GitHubSCMNavigator;
 import org.jenkinsci.plugins.github_branch_source.GitHubSCMSource;
 import org.jenkinsci.plugins.github_branch_source.OriginPullRequestDiscoveryTrait;
 import org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -67,6 +68,15 @@ import static org.junit.Assert.*;
 @PrepareForTest(GitHubWebHook.class)
 @PowerMockIgnore({"javax.crypto.*", "javax.security.*", "javax.net.ssl.*", "com.sun.org.apache.xerces.*", "com.sun.org.apache.xalan.*", "javax.xml.*", "org.xml.*", "org.w3c.dom.*"})
 public class GithubPipelineCreateRequestTest extends GithubMockBase {
+
+    @Override
+    @After
+    public void tearDown() {
+        if (!perTestStubMappings.isEmpty()) {
+            perTestStubMappings.forEach( mapping -> githubApi.removeStub( mapping));
+            perTestStubMappings.clear();
+        }
+    }
 
     @Test
     public void createPipeline() throws UnirestException {

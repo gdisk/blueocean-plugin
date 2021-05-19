@@ -22,7 +22,6 @@ import io.jenkins.blueocean.rest.impl.pipeline.PipelineBaseTest;
 import io.jenkins.blueocean.rest.impl.pipeline.credential.BlueOceanCredentialsProvider;
 import jenkins.branch.MultiBranchProject;
 import jenkins.branch.OrganizationFolder;
-import jenkins.scm.api.SCMSource;
 import org.jenkinsci.plugins.github_branch_source.GitHubSCMSource;
 import org.junit.After;
 import org.junit.Rule;
@@ -92,7 +91,7 @@ public abstract class GithubMockBase extends PipelineBaseTest {
                     })
     );
 
-    private final List<StubMapping> perTestStubMappings = new ArrayList<>();
+    protected final List<StubMapping> perTestStubMappings = new ArrayList<>();
 
     @Override
     public void setup() throws Exception {
@@ -120,10 +119,7 @@ public abstract class GithubMockBase extends PipelineBaseTest {
     @After
     public void tearDown() {
         if (!perTestStubMappings.isEmpty()) {
-            for (StubMapping mapping : perTestStubMappings) {
-                githubApi.removeStub(mapping);
-            }
-
+            perTestStubMappings.forEach( mapping -> githubApi.removeStub( mapping));
             perTestStubMappings.clear();
         }
         githubApi.resetAll();
