@@ -16,20 +16,20 @@ public class JSON {
      * @return sanitized string
      */
     public static String sanitizeString(@Nonnull String input) {
+        // replace the guava method
+        // return CharMatcher.JAVA_ISO_CONTROL.and(CharMatcher.anyOf("\r\n\t")).removeFrom(input);
         if (StringUtils.isEmpty(input)) {
             return null;
         }
         StringCharacterIterator iter = new  StringCharacterIterator(input);
         StringBuilder sb = new StringBuilder(input.length());
         for(char c = iter.first(); c != CharacterIterator.DONE; c = iter.next()) {
-            if(Character.isISOControl(c)){
-                continue;
-            }
+            boolean match = Character.isISOControl(c);
             switch (c) {
                 case '\r':
                 case '\n':
                 case '\t':
-                    continue;
+                    if (match) continue;
                 default:
                     sb.append(c);
             }
