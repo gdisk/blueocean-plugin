@@ -1,8 +1,5 @@
 package io.blueocean.ath.offline.multibranch;
 
-
-import com.google.common.io.Files;
-import com.google.common.io.Resources;
 import io.blueocean.ath.ATHJUnitRunner;
 import io.blueocean.ath.BlueOceanAcceptanceTest;
 import io.blueocean.ath.GitRepositoryRule;
@@ -22,6 +19,7 @@ import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 
 @RunWith(ATHJUnitRunner.class)
 public class RestartStageTest extends BlueOceanAcceptanceTest {
@@ -49,8 +47,8 @@ public class RestartStageTest extends BlueOceanAcceptanceTest {
     public void restartStageTest() throws IOException, GitAPIException, InterruptedException {
         final String pipelineName = "RestartStageTest";
         final String branchName = "master";
-        URL jenkinsFile = Resources.getResource(RestartStageTest.class, "RestartStageTest/Jenkinsfile");
-        Files.copy(new File(jenkinsFile.getFile()), new File(git.gitDirectory, "Jenkinsfile"));
+        URL jenkinsFile = RestartStageTest.class.getResource("RestartStageTest/Jenkinsfile");
+        Files.copy(new File( jenkinsFile.getFile()).toPath(), new File(git.gitDirectory, "Jenkinsfile").toPath());
 
         git.addAll();
         git.commit("Initial commit for " + pipelineName);

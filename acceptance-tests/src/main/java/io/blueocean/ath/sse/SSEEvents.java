@@ -1,13 +1,12 @@
 package io.blueocean.ath.sse;
 
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 
 public class SSEEvents {
@@ -21,8 +20,8 @@ public class SSEEvents {
      */
     public static Predicate<List<JSONObject>> activityComplete(String fullName){
         return list -> {
-            List<JSONObject> jobsQueued = Lists.newArrayList();
-            List<JSONObject> jobsFinished = Lists.newArrayList();
+            List<JSONObject> jobsQueued = new ArrayList();
+            List<JSONObject> jobsFinished = new ArrayList();
             for (JSONObject json : list) {
                 if(json.has("jenkins_event") && json.getString("jenkins_event").equals("job_run_queue_enter")) {
                     if(json.has("jenkins_object_type") &&
@@ -50,7 +49,10 @@ public class SSEEvents {
 
             for (JSONObject jsonObject : jobsQueued) {
 
-                Optional<JSONObject> found = Iterables.tryFind(jobsFinished, json -> json.getString("job_run_queueId").equals(jsonObject.getString("job_run_queueId")));
+                Optional<JSONObject> found = jobsFinished.stream()
+                    .filter(json -> json.getString( "job_run_queueId").equals( jsonObject.getString( "job_run_queueId")))
+                    .findFirst();
+
                 if(!found.isPresent()) {
                     logger.info("Waiting for '" + jsonObject.getString("job_name") + "' - queueID:" + jsonObject.getString("job_run_queueId") + " to finish");
                 } else {
