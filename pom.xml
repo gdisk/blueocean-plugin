@@ -938,5 +938,11 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>ath-build</id>
+            <modules>
+                <module>acceptance-tests</module>
+            </modules>
+        </profile>
     </profiles>
 </project>
