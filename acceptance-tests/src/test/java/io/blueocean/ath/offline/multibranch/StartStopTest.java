@@ -6,13 +6,13 @@ import io.blueocean.ath.model.MultiBranchPipeline;
 import io.blueocean.ath.pages.blue.ActivityPage;
 import io.blueocean.ath.pages.blue.BranchPage;
 import io.blueocean.ath.sse.SSEClientRule;
-import org.apache.log4j.Logger;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.junit.JGitTestUtil;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +22,7 @@ import java.nio.file.Files;
 @Login
 @RunWith(ATHJUnitRunner.class)
 public class StartStopTest extends BlueOceanAcceptanceTest {
-    private Logger logger = Logger.getLogger(CommitMessagesTest.class);
+    private Logger logger = LoggerFactory.getLogger(CommitMessagesTest.class);
 
     @Rule
     @Inject

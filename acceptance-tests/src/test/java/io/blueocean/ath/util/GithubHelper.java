@@ -1,10 +1,10 @@
 package io.blueocean.ath.util;
 
-import org.apache.log4j.Logger;
 import org.kohsuke.github.GHCreateRepositoryBuilder;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
-
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -13,11 +13,10 @@ import java.security.SecureRandom;
 import java.util.Objects;
 import java.util.Properties;
 
-
 public class GithubHelper {
     private static final SecureRandom RANDOM = new SecureRandom();
 
-    private Logger logger = Logger.getLogger(GithubHelper.class);
+    private Logger logger = LoggerFactory.getLogger(GithubHelper.class);
 
     private GitHub githubInstance;
     private GHRepository githubRepository;
