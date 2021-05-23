@@ -128,7 +128,7 @@ public class EditorPage {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("textarea[placeholder=\"What changed?\"]")));
         logger.info("Entering commit message into What Changed textarea");
         wait.sendKeys(By.cssSelector("textarea[placeholder=\"What changed?\"]"), "ATH made changes and is saving");
-        if(StringUtils.isBlank(branch)) {
+        if(StringUtils.isNotBlank(branch)) {
             wait.click(By.xpath("//span[text()='Commit to new branch']"));
             wait.sendKeys(By.cssSelector("input[placeholder='my-new-branch']:enabled"),branch);
             logger.info("Testing removal of spaces in branch name");
