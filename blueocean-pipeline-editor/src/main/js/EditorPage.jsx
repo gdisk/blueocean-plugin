@@ -24,7 +24,7 @@ import saveApi from './SaveApi';
 import { EditorMain } from './components/editor/EditorMain';
 import { CopyPastePipelineDialog } from './components/editor/CopyPastePipelineDialog';
 
-const Base64 = { encode: data => btoa(data), decode: str => atob(str) };
+const Base64 = { encode: data => btoa(unescape(encodeURIComponent(data))), decode: str => decodeURIComponent(escape(atob(str))) };
 const t = i18nTranslator('blueocean-pipeline-editor');
 
 class SaveDialog extends React.Component {
